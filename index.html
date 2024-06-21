@@ -116,6 +116,8 @@ After watching each video, you will be asked to answer to questions related to t
 	<div class="image-container">
             <img src="https://i.imgur.com/jwJ2Fq6.png" alt="Virtual counselor and Human">
         </div>
+		<label for="participantId">Entrez your prolific ID:</label>
+		<input type="text" id="participantId" required>
         <button onclick="startExperience()">Start the study</button>
     </div>
 
@@ -381,6 +383,8 @@ After watching each video, you will be asked to answer to questions related to t
     <div class="container hidden" id="endPage">
         <h1>Thank you for your participation</h1>
         <p>Your answers were succesfully saved</p>
+		<p>Please click on the link below:</p>
+		<a href="https://www.prolific.co/" target="_blank">Redirection to prolific</a>
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -437,7 +441,7 @@ After watching each video, you will be asked to answer to questions related to t
         let selectedVideos = [];
         let secondPartSelectedVideos = [];
         let currentVideoIndex = 0;
-        let participantId = generateParticipantId();
+        let participantId;
         let responses = [];
 
         window.goToStudyPurpose = function goToStudyPurpose() {
@@ -451,6 +455,14 @@ After watching each video, you will be asked to answer to questions related to t
         }
 
         window.startExperience = function startExperience() {
+		  // Get the participant ID from the input field
+			const participantIdInput = document.getElementById('participantId').value;
+			if (!participantIdInput) {
+				alert('Veuillez entrer votre ID de participant.');
+        		return;
+			}
+			participantId = participantIdInput;
+			
             const selectedGroups = getRandomGroups();
             selectedVideos = flattenAndRandomize(selectedGroups);
             document.getElementById('homePage').classList.add('hidden');
